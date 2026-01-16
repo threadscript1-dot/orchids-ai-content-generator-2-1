@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
-import { Image as ImageIcon, Video as VideoIcon, Music, ArrowRight, Zap, Sparkles, Wand2, Maximize, Eraser, Play } from 'lucide-react';
+import { Image as ImageIcon, Video as VideoIcon, ArrowRight, Zap, Sparkles, Wand2, Maximize, Eraser, Play } from 'lucide-react';
 import Link from 'next/link';
 import { useState, useRef } from 'react';
 
@@ -54,41 +54,6 @@ const TEMPLATES = [
         prompt_ru: 'Заменить лицо персонажа на лицо с приложенной фотографии, сохранив естественные пропорции, выражение и освещение. Реалистичное совмещение, корректная перспектива, совпадение тона кожи и направления света. Без искажений, без артефактов, без изменения пола и возраста. Результат должен выглядеть как единая фотография.',
         prompt_en: 'Replace the character\'s face with the face from the attached photo, maintaining natural proportions, expression and lighting. Realistic blending, correct perspective, matching skin tone and light direction. No distortions, no artifacts, no change in gender or age. The result should look like a single photograph.',
         target: '/app/create/image'
-    }
-];
-
-const AUDIO_STYLES = [
-    {
-        id: 'makan',
-        title: 'Макан',
-        description: 'Глубокий вайб, качающий бит',
-        image: 'https://avatars.yandex.net/get-music-content/8100650/e0f074d3.a.24354316-1/400x400',
-        style: 'Russian rap, deep masculine voice, melodic, dark atmospheric beat, emotional lyrics',
-        target: '/app/create/audio'
-    },
-    {
-        id: 'kadysheva',
-        title: 'Кадышева',
-        description: 'Народные мотивы и душевность',
-        image: 'https://avatars.yandex.net/get-music-content/163479/f0f8d836.a.3426214-1/400x400',
-        style: 'Russian folk pop, upbeat, accordion, energetic female vocals, traditional melodic structure',
-        target: '/app/create/audio'
-    },
-    {
-        id: 'vitas',
-        title: 'Витас',
-        description: 'Космический вокал и опера',
-        image: 'https://avatars.yandex.net/get-music-content/10530739/5319808a.a.28636750-1/400x400',
-        style: 'Operatic pop, high pitch male vocals, falsetto, electronic dance elements, dramatic atmosphere',
-        target: '/app/create/audio'
-    },
-    {
-        id: 'molchat-doma',
-        title: 'Молчат Дома',
-        description: 'Пост-панк и эстетика панелек',
-        image: 'https://avatars.yandex.net/get-music-content/11183141/008f168f.a.29088676-1/400x400',
-        style: 'Post-punk, Sovietwave, dark synth, lo-fi aesthetic, melancholic vocals, 80s drum machine',
-        target: '/app/create/audio'
     }
 ];
 
@@ -156,24 +121,23 @@ function TemplateCard({ item }: { item: typeof TEMPLATES[0] }) {
     );
 }
 
-function AudioStyleCard({ item }: { item: typeof AUDIO_STYLES[0] }) {
+function GalleryCard({ item }: { item: typeof GALLERY_ITEMS[0] }) {
+    const aspectClass = item.aspectRatio === 'vertical' 
+        ? 'row-span-2' 
+        : item.aspectRatio === 'horizontal' 
+            ? 'col-span-2' 
+            : '';
+    
     return (
-        <Link 
-            href={`${item.target}?style=${encodeURIComponent(item.style)}`}
-            className="flex-shrink-0 w-[200px] snap-start group"
-        >
-            <div className="aspect-square rounded-xl overflow-hidden mb-3 relative bg-white/5 border border-white/5">
+        <div className={`${aspectClass} group cursor-pointer`}>
+            <div className="w-full h-full rounded-2xl overflow-hidden bg-white/5 border border-white/5 hover:border-white/10 transition-all">
                 <img 
                     src={item.image} 
-                    alt={item.title} 
-                    className="w-full h-full object-cover transition-all duration-500"
+                    alt="" 
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
             </div>
-            <div className="text-left px-1">
-                <h4 className="font-bold text-base mb-0.5">{item.title}</h4>
-                <p className="text-[10px] text-white/40 uppercase tracking-wider font-bold">{item.description}</p>
-            </div>
-        </Link>
+        </div>
     );
 }
 
@@ -250,7 +214,7 @@ export function HomePage() {
             {/* Инструменты */}
             <section className="space-y-6">
                 <div className="flex items-center justify-between px-2">
-                    <h2 className="text-xl font-bold uppercase tracking-wider text-white/40">Инструменты</h2>
+                    <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">Инструменты</h2>
                 </div>
                 <HorizontalScroll>
                     {TOOLS_WITH_NANO.map(item => (
@@ -262,7 +226,7 @@ export function HomePage() {
             {/* Чертежи */}
             <section className="space-y-6">
                 <div className="flex items-center justify-between px-2">
-                    <h2 className="text-xl font-bold uppercase tracking-wider text-white/40">Чертежи</h2>
+                    <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">Чертежи</h2>
                 </div>
                 <HorizontalScroll>
                     {TEMPLATES.map(item => (
@@ -271,27 +235,7 @@ export function HomePage() {
                 </HorizontalScroll>
             </section>
 
-            {/* Песня в любом стиле */}
-            <section className="space-y-6">
-                <div className="flex items-center justify-between px-2">
-                    <div className="space-y-1 text-left">
-                        <h2 className="text-xl font-bold uppercase tracking-wider text-white/40">Песня в любом стиле</h2>
-                        <p className="text-sm text-white/20">Музыка на любой вкус в одно нажатие</p>
-                    </div>
-                    <Link 
-                        href="/app/create/audio"
-                        className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-xs font-bold transition-all border border-white/5"
-                    >
-                        <Music className="w-3.5 h-3.5" />
-                        Сделать песню
-                    </Link>
-                </div>
-                <HorizontalScroll>
-                    {AUDIO_STYLES.map(item => (
-                        <AudioStyleCard key={item.id} item={item} />
-                    ))}
-                </HorizontalScroll>
-            </section>
+
         </div>
     );
 }

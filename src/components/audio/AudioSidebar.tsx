@@ -120,7 +120,7 @@ export function AudioSidebar({
                             <div className="flex items-center justify-between">
                                 <button
                                     onClick={() => setShowLyrics(!showLyrics)}
-                                    className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.15em] text-white/50 group hover:text-white transition-colors"
+                                    className="flex items-center gap-2 text-xs font-black uppercase tracking-[0.2em] text-white/50 group hover:text-white transition-colors"
                                 >
                                     {showLyrics ? (
                                         <ChevronDown className="w-3.5 h-3.5" />
@@ -157,7 +157,7 @@ export function AudioSidebar({
 
                         {/* Description Section */}
                         <div className="space-y-4">
-                            <span className="text-xs font-black uppercase tracking-[0.15em] text-white/50 block mb-4">
+                            <span className="text-xs font-black uppercase tracking-[0.2em] text-white/50 block mb-4">
                                 {language === 'ru' ? 'Описание' : 'Description'}
                             </span>
                             <textarea
@@ -175,7 +175,7 @@ export function AudioSidebar({
                         {/* Style Section */}
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
-                                <span className="text-xs font-black uppercase tracking-[0.15em] text-white/50">
+                                <span className="text-xs font-black uppercase tracking-[0.2em] text-white/50">
                                     {language === 'ru' ? 'Стиль' : 'Style'}
                                 </span>
                                 <div className="flex items-center gap-1">
@@ -230,7 +230,7 @@ export function AudioSidebar({
                                     className="overflow-hidden space-y-6 mb-4"
                                 >
                                     <div className="space-y-4">
-                                        <span className="text-xs font-black uppercase tracking-[0.15em] text-white/50 block mb-4">
+                                        <span className="text-xs font-black uppercase tracking-[0.2em] text-white/50 block mb-4">
                                             {language === 'ru' ? 'Название' : 'Title'}
                                         </span>
                                         <input
@@ -288,7 +288,7 @@ export function AudioSidebar({
 
                         <button
                             onClick={() => setShowAdvanced(!showAdvanced)}
-                            className="w-full flex items-center justify-center gap-2 py-1 text-xs font-black uppercase tracking-[0.15em] text-white/50 hover:text-white transition-colors"
+                            className="w-full flex items-center justify-start gap-2 py-1 text-xs font-black uppercase tracking-[0.2em] text-white/50 hover:text-white transition-colors"
                         >
                             {showAdvanced ? (
                                 <ChevronDown className="w-3 h-3" />

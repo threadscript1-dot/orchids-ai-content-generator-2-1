@@ -78,7 +78,7 @@ export default function ToolsPage() {
     return (
         <div className="max-w-6xl mx-auto space-y-8 pb-32">
             <div className="flex flex-col gap-2">
-                <h1 className="text-3xl font-black uppercase tracking-tight flex items-center gap-3">
+                <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight flex items-center gap-3">
                     <Wrench className="w-8 h-8 text-white" />
                     {t('nav.edit')}
                 </h1>

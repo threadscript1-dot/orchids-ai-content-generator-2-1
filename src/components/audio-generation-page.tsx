@@ -157,7 +157,7 @@ export function AudioGenerationPage() {
                     {/* Top Header with Search */}
                     <header className="p-6 flex items-center justify-between gap-6 sticky top-0 z-40 pointer-events-none">
                         <div className="flex items-center gap-4 sm:gap-6 pointer-events-auto">
-                            <Link href="/app" className="p-2 rounded-xl hover:bg-white/10 transition-colors bg-black/20 backdrop-blur-sm border border-white/5">
+                            <Link href="/app" className="p-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-colors">
                                 <ArrowLeft className="w-5 h-5" />
                             </Link>
                             <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight">

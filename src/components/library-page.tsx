@@ -659,8 +659,8 @@ export function LibraryPage() {
                                         className={
                                             activeCategory === 'audio' ||
                                             (activeFolder && contentTypeFilter === 'audio')
-                                                ? 'flex flex-col gap-4 max-w-5xl'
-                                                : `grid gap-2 sm:gap-6 ${
+                                                ? 'flex flex-col gap-3 max-w-5xl'
+                                                : `grid gap-2 ${
                                                       viewMode === 'grid'
                                                           ? 'grid-cols-2 sm:grid-cols-none'
                                                           : 'grid-cols-1 sm:grid-cols-none'

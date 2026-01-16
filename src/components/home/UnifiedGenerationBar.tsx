@@ -145,15 +145,31 @@ export function UnifiedGenerationBar() {
             </div>
 
             <div
-                className={`glass border transition-all rounded-[32px] p-4 shadow-2xl relative ${
+                className={`relative transition-all rounded-[32px] p-4 shadow-2xl ${
                     isDragging
                         ? 'border-[#6F00FF] border-2 border-dashed shadow-[0_0_50px_rgba(111,0,255,0.2)]'
-                        : 'border-white/10'
+                        : ''
                 }`}
+                style={{
+                    background: 'rgba(255,255,255,0.03)',
+                    backdropFilter: 'blur(12px)',
+                }}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
             >
+                {!isDragging && (
+                    <div 
+                        className="absolute inset-0 rounded-[32px] pointer-events-none"
+                        style={{
+                            padding: '1px',
+                            background: 'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.1) 100%)',
+                            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                            WebkitMaskComposite: 'xor',
+                            maskComposite: 'exclude',
+                        }}
+                    />
+                )}
                 <input
                     type="file"
                     ref={fileInputRef}
@@ -201,19 +217,25 @@ export function UnifiedGenerationBar() {
                         <div className="flex items-center gap-2">
                             <button
                                 onClick={() => fileInputRef.current?.click()}
-                                className="flex items-center justify-center text-white/40 hover:text-white transition-colors w-10 h-10 rounded-full bg-white/5 border border-white/10"
+                                className="flex items-center justify-center text-white/40 hover:text-white transition-colors h-9 px-3 rounded-2xl bg-white/5 hover:bg-white/10"
                             >
-                                <Plus className="w-3.5 h-3.5" />
+                                <Plus className="w-4 h-4" />
                             </button>
                             <button
                                 onClick={() => setMode(mode === 'image' ? 'video' : 'image')}
-                                className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white transition-all border border-white/10"
+                                className="h-9 px-3 md:px-4 flex items-center justify-center gap-2 rounded-2xl bg-white/5 hover:bg-white/10 text-white transition-all"
                                 title={mode === 'image' ? 'Switch to Video' : 'Switch to Image'}
                             >
                                 {mode === 'image' ? (
-                                    <ImageIcon className="w-4 h-4" />
+                                    <>
+                                        <ImageIcon className="w-4 h-4" />
+                                        <span className="hidden md:inline text-xs font-medium">{language === 'ru' ? 'Изображение' : 'Image'}</span>
+                                    </>
                                 ) : (
-                                    <VideoIcon className="w-4 h-4" />
+                                    <>
+                                        <VideoIcon className="w-4 h-4" />
+                                        <span className="hidden md:inline text-xs font-medium">{language === 'ru' ? 'Видео' : 'Video'}</span>
+                                    </>
                                 )}
                             </button>
 
@@ -257,7 +279,7 @@ export function UnifiedGenerationBar() {
                         <button
                             onClick={handleGenerate}
                             disabled={!prompt.trim()}
-                            className="px-6 py-2.5 rounded-2xl bg-[#6F00FF] text-white font-black uppercase tracking-widest text-xs disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto flex items-center justify-center hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_0_30px_rgba(111,0,255,0.3)]"
+                            className="h-9 px-6 rounded-2xl bg-[#6F00FF] text-white font-black uppercase tracking-widest text-xs disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto flex items-center justify-center hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_0_30px_rgba(111,0,255,0.3)]"
                         >
                             {t('prompt.create')}
                         </button>

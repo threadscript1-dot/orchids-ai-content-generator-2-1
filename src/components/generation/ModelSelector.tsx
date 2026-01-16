@@ -30,7 +30,7 @@ export function ModelSelector({
 
     return (
         <Select value={value} onValueChange={onChange} open={open} onOpenChange={onOpenChange}>
-            <SelectTrigger className="w-fit min-w-[100px] h-10 bg-white/5 border-none rounded-2xl px-4 text-xs font-medium gap-3 hover:bg-white/10 transition-colors">
+            <SelectTrigger className="w-fit min-w-[100px] h-9 bg-white/5 border-none rounded-2xl px-4 text-xs font-medium gap-3 hover:bg-white/10 transition-colors">
                 <div className="flex items-center gap-3">
                     <Cpu className="w-4 h-4 text-white" />
                     <span className="text-white">{selectedModel?.name || 'Select model'}</span>

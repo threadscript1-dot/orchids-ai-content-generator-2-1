@@ -72,15 +72,31 @@ export function ImageGenerationBar({
         <div className="fixed bottom-0 md:bottom-6 left-0 right-0 z-40 flex justify-center pointer-events-none px-0 md:px-6 mb-[64px] md:mb-0">
             <div className="w-full max-w-2xl pointer-events-auto">
                 <div
-                    className={`relative rounded-t-[32px] md:rounded-[32px] glass p-4 transition-all ${
+                    className={`relative rounded-t-[32px] md:rounded-[32px] p-4 transition-all ${
                         isDragging
                             ? 'border-[#6F00FF] border-2 border-dashed shadow-[0_0_50px_rgba(111,0,255,0.2)]'
-                            : 'border-white/10 md:border border-b-0 md:border-b shadow-2xl'
+                            : 'shadow-2xl'
                     }`}
+                    style={{
+                        background: 'rgba(0,0,0,0.8)',
+                        backdropFilter: 'blur(12px)',
+                    }}
                     onDragOver={onDragOver}
                     onDragLeave={onDragLeave}
                     onDrop={onDrop}
                 >
+                    {!isDragging && (
+                        <div 
+                            className="absolute inset-0 rounded-t-[32px] md:rounded-[32px] pointer-events-none"
+                            style={{
+                                padding: '1px',
+                                background: 'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.1) 100%)',
+                                WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                                WebkitMaskComposite: 'xor',
+                                maskComposite: 'exclude',
+                            }}
+                        />
+                    )}
                     {uploadedImages.length > 0 && (
                         <div className="mb-4">
                             <UploadedImagesPreview images={uploadedImages} onRemove={onRemoveImage} />
@@ -99,9 +115,9 @@ export function ImageGenerationBar({
                         <div className="flex items-center gap-2 flex-wrap">
                             <button
                                 onClick={onOpenFilePicker}
-                                className="flex items-center justify-center text-white/40 hover:text-white transition-colors w-10 h-10 rounded-full bg-white/5 border border-white/10"
+                                className="flex items-center justify-center text-white/40 hover:text-white transition-colors h-10 px-3 rounded-2xl bg-white/5 hover:bg-white/10"
                             >
-                                <Plus className="w-3.5 h-3.5" />
+                                <Plus className="w-4 h-4" />
                             </button>
                             <ModelSelector
                                 models={models}
@@ -130,7 +146,7 @@ export function ImageGenerationBar({
                             <button
                                 onClick={onGenerate}
                                 disabled={!prompt.trim() || isGenerating}
-                                className="px-6 py-4 rounded-2xl bg-[#6F00FF] text-white font-black uppercase tracking-widest text-xs disabled:opacity-50 disabled:cursor-not-allowed w-[35%] sm:w-auto flex items-center justify-center hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_0_30px_rgba(111,0,255,0.3)] ml-auto"
+                                className="px-6 py-2.5 rounded-2xl bg-[#6F00FF] text-white font-black uppercase tracking-widest text-xs disabled:opacity-50 disabled:cursor-not-allowed w-[35%] sm:w-auto flex items-center justify-center hover:scale-[1.02] active:scale-[0.98] transition-all shadow-[0_0_30px_rgba(111,0,255,0.3)] ml-auto"
                             >
                                 {isGenerating ? (
                                     <Loader2 className="w-4 h-4 animate-spin" />

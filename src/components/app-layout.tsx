@@ -326,28 +326,29 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                                             </div>
                                         </div>
 
-                                        <div className="p-4 border-t border-white/10 space-y-4">
-                                            <div className="bg-white/5 rounded-2xl p-4">
-                                                <div className="flex items-center justify-between mb-3">
-                                                    <span className="text-xs text-muted-foreground">
+                                        <div className="p-4 border-t border-white/10">
+                                            <div className="bg-white/5 rounded-2xl p-3">
+                                                <div className="flex items-center justify-between mb-2">
+                                                    <span className="text-xs text-white">
                                                         {t('nav.credits')}
                                                     </span>
-                                                    <span className="text-xs font-bold text-[#FFDC74]">
-                                                        {creditBalance} / {maxCredits}
-                                                    </span>
+                                                    <div className="flex items-center gap-2">
+                                                        <span className="text-xs font-bold text-[#FFDC74]">
+                                                            {creditBalance} / {maxCredits}
+                                                        </span>
+                                                        <Link
+                                                            href="/app/profile#plans"
+                                                            onClick={() => setMenuOpen(false)}
+                                                            className="px-2 py-1 rounded-lg bg-[#FFDC74] hover:bg-[#FFDC74]/90 transition-colors text-[10px] font-bold text-black uppercase tracking-wider"
+                                                        >
+                                                            {t('nav.more')}
+                                                        </Link>
+                                                    </div>
                                                 </div>
                                                 <Progress
                                                     value={creditPercentage}
-                                                    className="h-1.5 bg-white/10 mb-4"
-                                                    // indicatorClassName="bg-gradient-to-r from-[#6F00FF] to-[#a855f7]"
+                                                    className="h-1 bg-white/10 [&>div]:bg-[#FFDC74]"
                                                 />
-                                                <Link
-                                                    href="/app/profile#plans"
-                                                    onClick={() => setMenuOpen(false)}
-                                                    className="flex items-center justify-center w-full px-3 py-2 rounded-xl bg-[#FFDC74] hover:bg-[#FFDC74]/90 transition-colors text-xs font-bold text-black uppercase tracking-wider"
-                                                >
-                                                    {t('nav.more')}
-                                                </Link>
                                             </div>
                                         </div>
                                     </div>

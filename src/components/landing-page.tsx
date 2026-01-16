@@ -56,27 +56,22 @@ function SpotlightGrid() {
     return (
         <div
             ref={containerRef}
-            className="absolute inset-0 z-0 pointer-events-none overflow-hidden h-[1000px]"
+            className="absolute inset-0 z-[1] pointer-events-none"
         >
             <div
-                className="absolute inset-0 opacity-[0.1]"
+                className="absolute inset-0 opacity-[0.08]"
                 style={{
                     backgroundImage: `linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px)`,
-                    backgroundSize: '15px 15px',
-                    maskImage: 'linear-gradient(to bottom, black 0%, black 30%, transparent 60%)',
+                    backgroundSize: '60px 60px',
+                    maskImage: 'radial-gradient(circle at 50% 30%, black 0%, transparent 50%)',
+                    WebkitMaskImage: 'radial-gradient(circle at 50% 30%, black 0%, transparent 50%)',
                 }}
             />
-
-            <div className="absolute inset-0 opacity-[0.05] pointer-events-none">
-                <div className="absolute top-[10%] left-[-10%] w-[120%] h-[0.5px] bg-white rotate-[15deg]" />
-                <div className="absolute top-[40%] left-[-10%] w-[120%] h-[0.5px] bg-white rotate-[-8deg]" />
-                <div className="absolute top-[70%] left-[-10%] w-[120%] h-[0.5px] bg-white rotate-[12deg]" />
-            </div>
 
             <div
                 className="absolute inset-0 pointer-events-none opacity-80 transition-opacity"
                 style={{
-                    background: `radial-gradient(400px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.08), transparent 60%)`,
+                    background: `radial-gradient(500px circle at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.06), transparent 50%)`,
                 }}
             />
         </div>
@@ -1038,29 +1033,45 @@ export function LandingPage() {
                             transition={{ delay: 0.2 }}
                             className="max-w-3xl mx-auto mb-20"
                         >
-                            <div className="flex items-center justify-center gap-3 mb-6">
+                            <div className="flex items-center justify-center gap-3 mb-6 relative z-10">
                                 <Link 
                                     href="/app/create/image" 
-                                    className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/10 transition-all hover:scale-105 active:scale-95 shadow-xl"
+                                    className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/10 transition-all hover:scale-105 active:scale-95 shadow-xl backdrop-blur-md"
                                 >
                                     {language === 'ru' ? 'Изображение' : 'Image'}
                                 </Link>
                                 <Link 
                                     href="/app/create/video" 
-                                    className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/10 transition-all hover:scale-105 active:scale-95 shadow-xl"
+                                    className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/10 transition-all hover:scale-105 active:scale-95 shadow-xl backdrop-blur-md"
                                 >
                                     {language === 'ru' ? 'Видео' : 'Video'}
                                 </Link>
                                 <Link 
                                     href="/app/create/audio" 
-                                    className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/10 transition-all hover:scale-105 active:scale-95 shadow-xl"
+                                    className="px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white hover:bg-white/10 transition-all hover:scale-105 active:scale-95 shadow-xl backdrop-blur-md"
                                 >
                                     {language === 'ru' ? 'Аудио' : 'Audio'}
                                 </Link>
                             </div>
-                            <div className="relative group">
+                            <div className="relative group z-10">
                                 <div className="absolute -inset-4 bg-[#6F00FF]/10 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
-                                <div className="relative bg-white/[0.03] border border-white/10 rounded-2xl p-2 backdrop-blur-sm">
+                                <div 
+                                    className="relative rounded-3xl p-2"
+                                    style={{
+                                        background: 'rgba(255,255,255,0.03)',
+                                        backdropFilter: 'blur(12px)',
+                                    }}
+                                >
+                                    <div 
+                                        className="absolute inset-0 rounded-3xl pointer-events-none"
+                                        style={{
+                                            padding: '1px',
+                                            background: 'linear-gradient(to bottom, transparent 0%, rgba(255,255,255,0.1) 100%)',
+                                            WebkitMask: 'linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0)',
+                                            WebkitMaskComposite: 'xor',
+                                            maskComposite: 'exclude',
+                                        }}
+                                    />
                                     <div className="flex flex-col min-h-[160px]">
                                         <textarea
                                             value={prompt}
@@ -1103,12 +1114,15 @@ export function LandingPage() {
                     ref={featuresRef}
                     className="py-32 px-6 relative bg-white text-black"
                 >
-                    <div className="absolute inset-0 z-0 opacity-40">
+                    <div className="absolute inset-0 z-0">
                         <div
-                            className="absolute inset-0 opacity-[0.05]"
+                            className="absolute inset-0"
                             style={{
                                 backgroundImage: `linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)`,
-                                backgroundSize: '20px 20px',
+                                backgroundSize: '60px 60px',
+                                maskImage: 'radial-gradient(circle at 50% 50%, black 0%, transparent 50%)',
+                                WebkitMaskImage: 'radial-gradient(circle at 50% 50%, black 0%, transparent 50%)',
+                                opacity: 0.06,
                             }}
                         />
                     </div>

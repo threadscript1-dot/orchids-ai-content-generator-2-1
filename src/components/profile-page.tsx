@@ -39,7 +39,7 @@ export function ProfilePage() {
 
     return (
         <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold mb-6">{t('profile.title')}</h1>
+            <h1 className="text-2xl md:text-3xl font-black uppercase tracking-tight mb-6">{t('profile.title')}</h1>
 
             <div className="grid md:grid-cols-2 gap-6">
                 <motion.div

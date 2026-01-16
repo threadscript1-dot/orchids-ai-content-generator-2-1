@@ -256,7 +256,7 @@ export function ImageGenerationPage() {
 
             <div className="px-2 sm:px-6 mt-4 sm:mt-8">
                 <div
-                    className={`grid gap-2 sm:gap-6 ${
+                    className={`grid gap-2 ${
                         viewMode === 'grid'
                             ? 'grid-cols-2 sm:grid-cols-none'
                             : 'grid-cols-1 sm:grid-cols-none'

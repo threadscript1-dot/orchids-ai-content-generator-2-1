@@ -200,7 +200,7 @@ export function LibrarySidebar({
     return (
         <aside className="w-full lg:w-64 shrink-0 space-y-8">
             <div>
-                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-4 px-3">
+                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 mb-4 px-3">
                     {language === 'ru' ? 'Обзор' : 'Overview'}
                 </h2>
                 <div className="space-y-1">
@@ -211,7 +211,7 @@ export function LibrarySidebar({
             </div>
 
             <div>
-                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 mb-4 px-3">
+                <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 mb-4 px-3">
                     {language === 'ru' ? 'Инструменты' : 'Tools'}
                 </h2>
                 <div className="space-y-1">
@@ -223,7 +223,7 @@ export function LibrarySidebar({
 
             <div>
                 <div className="flex items-center justify-between px-3 mb-4">
-                    <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">
+                    <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">
                         {language === 'ru' ? 'Моё' : 'Mine'}
                     </h2>
                     <button
