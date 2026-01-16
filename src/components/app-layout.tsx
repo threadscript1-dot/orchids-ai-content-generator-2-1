@@ -44,20 +44,26 @@ function NavItem({
     icon: Icon,
     label,
     active,
+    highlight,
 }: {
     href: string;
     icon: any;
     label: string;
     active: boolean;
+    highlight?: boolean;
 }) {
     return (
         <Link
             href={href}
-            className={`flex flex-col items-center justify-center gap-1 p-2 rounded-xl transition-colors ${
-                active ? 'text-white' : 'text-muted-foreground hover:text-white'
+            className={`flex flex-col items-center justify-center gap-1 transition-colors ${
+                highlight
+                    ? 'bg-[#7C3AED] text-white px-6 py-2 rounded-2xl'
+                    : active
+                      ? 'text-white p-2'
+                      : 'text-muted-foreground hover:text-white p-2'
             }`}
         >
-            <Icon className={`w-5 h-5 ${active ? 'text-white' : ''}`} />
+            <Icon className={`w-5 h-5 ${active || highlight ? 'text-white' : ''}`} />
             <span className="text-[10px] font-medium">{label}</span>
         </Link>
     );
@@ -425,13 +431,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
             <nav className="md:hidden fixed bottom-0 left-0 right-0 z-50 glass">
                 <div className="flex items-center justify-around h-16 px-2">
-                    {navItems.map((item, index) => (
+                    {navItems.map((item) => (
                         <NavItem
                             key={item.href}
                             href={item.href}
                             icon={item.icon}
                             label={item.label}
                             active={pathname === item.href}
+                            highlight={item.href === '/app'}
                         />
                     ))}
                 </div>
