@@ -22,6 +22,9 @@ import {
     Clock,
     Sparkles,
     FileText,
+    Shuffle,
+    Repeat,
+    Gauge,
 } from 'lucide-react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
@@ -34,6 +37,7 @@ import {
 import { Slider } from '@/components/ui/slider';
 import { useLanguage } from '@/lib/language-context';
 import { Generation, useGenerationStore } from '@/stores/generation-store';
+import { useAuth } from '@/hooks/use-auth';
 import { toast } from 'sonner';
 import { AddToCollectionModal } from '@/components/library/AddToCollectionModal';
 import { ConfirmDeleteDialog } from '@/components/library/ConfirmDeleteDialog';
@@ -65,6 +69,7 @@ export function AudioDetailDialog({
     const { language } = useLanguage();
     const router = useRouter();
     const audioRef = useRef<HTMLAudioElement>(null);
+    const { user } = useAuth();
     
     const [selectedTrackIndex, setSelectedTrackIndex] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
@@ -72,6 +77,9 @@ export function AudioDetailDialog({
     const [duration, setDuration] = useState(0);
     const [isAddToCollectionOpen, setIsAddToCollectionOpen] = useState(false);
     const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false);
+    const [isShuffleOn, setIsShuffleOn] = useState(false);
+    const [isRepeatOn, setIsRepeatOn] = useState(false);
+    const [speedPreset, setSpeedPreset] = useState<'normal' | 'slowed' | 'nightcore'>('normal');
 
     const storeGenerations = useGenerationStore((state) => state.generations);
     const removeGeneration = useGenerationStore((state) => state.removeGeneration);
@@ -111,6 +119,13 @@ export function AudioDetailDialog({
             audioRef.current.load();
         }
     }, [currentTrack?.url]);
+
+    useEffect(() => {
+        if (audioRef.current) {
+            const speed = speedPreset === 'slowed' ? 0.8 : speedPreset === 'nightcore' ? 1.2 : 1.0;
+            audioRef.current.playbackRate = speed;
+        }
+    }, [speedPreset]);
 
     const handlePrevious = useCallback(() => {
         if (!audio || !onSelectAudio || audios.length === 0) return;
@@ -188,6 +203,39 @@ export function AudioDetailDialog({
             setSelectedTrackIndex(selectedTrackIndex + 1);
             setIsPlaying(false);
         }
+    };
+
+    const handleTrackEnded = () => {
+        if (isRepeatOn) {
+            if (audioRef.current) {
+                audioRef.current.currentTime = 0;
+                audioRef.current.play();
+            }
+        } else if (isShuffleOn && tracks.length > 1) {
+            let randomIndex = Math.floor(Math.random() * tracks.length);
+            while (randomIndex === selectedTrackIndex) {
+                randomIndex = Math.floor(Math.random() * tracks.length);
+            }
+            setSelectedTrackIndex(randomIndex);
+            setIsPlaying(false);
+        } else {
+            playNextTrack();
+        }
+    };
+
+    const getTrackTitle = () => {
+        if (audio.prompt) {
+            const lines = audio.prompt.split('\n');
+            const firstLine = lines[0]?.trim();
+            if (firstLine && firstLine.length > 0 && firstLine.length < 60) {
+                return firstLine;
+            }
+        }
+        return language === 'ru' ? `Трек ${selectedTrackIndex + 1}` : `Track ${selectedTrackIndex + 1}`;
+    };
+
+    const getArtistName = () => {
+        return user?.display_name || (language === 'ru' ? 'Пользователь' : 'User');
     };
 
     if (!audio) return null;
@@ -286,7 +334,7 @@ export function AudioDetailDialog({
 
                     <div className="flex-1 relative flex flex-col items-center bg-black pt-16 pb-4 px-4 lg:pt-12 lg:pb-12 lg:px-12 min-h-0 overflow-y-auto lg:justify-center">
                         <div className="w-full max-w-[280px] sm:max-w-[320px] lg:max-w-md mx-auto shrink-0">
-                            <div className="relative w-full aspect-square rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl mb-6 lg:mb-8">
+                            <div className="relative w-full aspect-square rounded-2xl lg:rounded-3xl overflow-hidden shadow-2xl mb-4 lg:mb-6">
                                 {currentTrack?.cover ? (
                                     <img
                                         src={currentTrack.cover}
@@ -300,10 +348,25 @@ export function AudioDetailDialog({
                                 )}
                                 <div className="absolute inset-0 bg-black/20" />
                             </div>
+                            
+                            <div className="text-center mb-6 lg:mb-8">
+                                <h2 className="text-lg lg:text-xl font-bold text-white truncate mb-1">
+                                    {getTrackTitle()}
+                                </h2>
+                                <p className="text-sm text-white/50">
+                                    {getArtistName()}
+                                </p>
+                            </div>
                         </div>
 
                         <div className="w-full max-w-[280px] sm:max-w-[320px] lg:max-w-md mx-auto space-y-4 shrink-0">
-                            <div className="flex items-center justify-center gap-6">
+                            <div className="flex items-center justify-center gap-4 lg:gap-6">
+                                <button
+                                    onClick={() => setIsShuffleOn(!isShuffleOn)}
+                                    className={`p-2 rounded-full transition-all ${isShuffleOn ? 'text-[#6F00FF]' : 'text-white/40 hover:text-white'}`}
+                                >
+                                    <Shuffle className="w-4 h-4 lg:w-5 lg:h-5" />
+                                </button>
                                 <button
                                     onClick={playPrevTrack}
                                     disabled={selectedTrackIndex === 0}
@@ -327,6 +390,45 @@ export function AudioDetailDialog({
                                     className="p-3 rounded-full text-white/60 hover:text-white disabled:opacity-30 transition-all"
                                 >
                                     <SkipForward className="w-5 h-5 lg:w-6 lg:h-6" />
+                                </button>
+                                <button
+                                    onClick={() => setIsRepeatOn(!isRepeatOn)}
+                                    className={`p-2 rounded-full transition-all ${isRepeatOn ? 'text-[#6F00FF]' : 'text-white/40 hover:text-white'}`}
+                                >
+                                    <Repeat className="w-4 h-4 lg:w-5 lg:h-5" />
+                                </button>
+                            </div>
+
+                            <div className="flex items-center justify-center gap-2">
+                                <button
+                                    onClick={() => setSpeedPreset('normal')}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                                        speedPreset === 'normal'
+                                            ? 'bg-white text-black'
+                                            : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'
+                                    }`}
+                                >
+                                    Normal
+                                </button>
+                                <button
+                                    onClick={() => setSpeedPreset('slowed')}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                                        speedPreset === 'slowed'
+                                            ? 'bg-[#6F00FF] text-white'
+                                            : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'
+                                    }`}
+                                >
+                                    Slowed
+                                </button>
+                                <button
+                                    onClick={() => setSpeedPreset('nightcore')}
+                                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${
+                                        speedPreset === 'nightcore'
+                                            ? 'bg-pink-500 text-white'
+                                            : 'bg-white/5 text-white/60 hover:bg-white/10 hover:text-white'
+                                    }`}
+                                >
+                                    Nightcore
                                 </button>
                             </div>
 
@@ -609,7 +711,7 @@ export function AudioDetailDialog({
                     onLoadedMetadata={handleLoadedMetadata}
                     onPlay={() => setIsPlaying(true)}
                     onPause={() => setIsPlaying(false)}
-                    onEnded={playNextTrack}
+                    onEnded={handleTrackEnded}
                 />
 
                 <AddToCollectionModal

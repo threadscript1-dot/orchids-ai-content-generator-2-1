@@ -4,6 +4,7 @@ import { useState, useRef, useCallback } from "react";
 import { ArrowLeft, Plus, X, Sparkles, Loader2, Download, Zap } from "lucide-react";
 import Link from "next/link";
 import { useLanguage } from "@/lib/language-context";
+import { downloadFile } from "@/lib/utils";
 
 interface AppPageProps {
   title: string;
@@ -221,22 +222,19 @@ export function AppPage({
                   </p>
                 </div>
               </div>
-            ) : result ? (
-              <div className="relative max-w-lg mx-auto">
-                <img src={result} alt="Result" className="w-full rounded-3xl border border-white/10 shadow-2xl" />
-                <button 
-                  onClick={() => {
-                    const link = document.createElement('a');
-                    link.href = result;
-                    link.download = 'result.png';
-                    link.click();
-                  }}
-                  className="absolute bottom-4 right-4 p-4 rounded-2xl bg-[#6F00FF] text-white hover:scale-110 active:scale-95 transition-all shadow-2xl"
-                >
-                  <Download className="w-5 h-5" />
-                </button>
-              </div>
-            ) : (
+              ) : result ? (
+                <div className="relative max-w-lg mx-auto">
+                  <img src={result} alt="Result" className="w-full rounded-3xl border border-white/10 shadow-2xl" />
+                  <button 
+                    onClick={() => {
+                      downloadFile(result, 'result.png');
+                    }}
+                    className="absolute bottom-4 right-4 p-4 rounded-2xl bg-[#6F00FF] text-white hover:scale-110 active:scale-95 transition-all shadow-2xl"
+                  >
+                    <Download className="w-5 h-5" />
+                  </button>
+                </div>
+              ) : (
               <div className="aspect-video md:aspect-[21/9] border-2 border-dashed border-white/5 rounded-3xl flex items-center justify-center">
                 <p className="text-[10px] font-black uppercase tracking-widest text-white/10">
                   {language === "ru" ? "Результат появится здесь" : "Result will appear here"}

@@ -35,11 +35,11 @@ interface AudioPlayerFooterProps {
     audioProgress: number;
     audioDuration: number;
     volume: number;
-    playbackSpeed: number;
+    speedPreset: 'normal' | 'slowed' | 'nightcore';
     onTogglePlayPause: () => void;
     onSeek: (e: React.MouseEvent<HTMLDivElement>) => void;
     onVolumeChange: (e: React.MouseEvent<HTMLDivElement>) => void;
-    onPlaybackSpeedChange: (speed: number) => void;
+    onSpeedPresetChange: (preset: 'normal' | 'slowed' | 'nightcore') => void;
     onPlayNext: () => void;
     onPlayPrev: () => void;
     formatDuration: (seconds: number) => string;
@@ -51,11 +51,11 @@ export function AudioPlayerFooter({
     audioProgress,
     audioDuration,
     volume,
-    playbackSpeed,
+    speedPreset,
     onTogglePlayPause,
     onSeek,
     onVolumeChange,
-    onPlaybackSpeedChange,
+    onSpeedPresetChange,
     onPlayNext,
     onPlayPrev,
     formatDuration,
@@ -141,31 +141,39 @@ export function AudioPlayerFooter({
                         </p>
                     </div>
 
-                    {/* Speed Switcher */}
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <button className="p-2 rounded-lg bg-white/5 hover:bg-white/10 text-white/40 hover:text-white transition-all">
-                                <Gauge className="w-4 h-4" />
-                            </button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                            align="start"
-                            side="top"
-                            className="bg-[#111] border-white/10 rounded-2xl p-2 font-mono"
+                    {/* Speed Preset Chips */}
+                    <div className="hidden sm:flex items-center gap-1 p-1 bg-white/5 rounded-full">
+                        <button
+                            onClick={() => onSpeedPresetChange('normal')}
+                            className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-all ${
+                                speedPreset === 'normal'
+                                    ? 'bg-white text-black'
+                                    : 'text-white/40 hover:text-white'
+                            }`}
                         >
-                            {[0.8, 1.0, 1.2, 1.5].map((speed) => (
-                                <DropdownMenuItem
-                                    key={speed}
-                                    onClick={() => onPlaybackSpeedChange(speed)}
-                                    className={`text-[10px] font-bold p-2.5 rounded-lg cursor-pointer ${
-                                        playbackSpeed === speed ? 'bg-[#6F00FF]' : 'focus:bg-[#6F00FF]'
-                                    }`}
-                                >
-                                    {speed}x
-                                </DropdownMenuItem>
-                            ))}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                            Normal
+                        </button>
+                        <button
+                            onClick={() => onSpeedPresetChange('slowed')}
+                            className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-all ${
+                                speedPreset === 'slowed'
+                                    ? 'bg-[#6F00FF] text-white'
+                                    : 'text-white/40 hover:text-white'
+                            }`}
+                        >
+                            Slowed
+                        </button>
+                        <button
+                            onClick={() => onSpeedPresetChange('nightcore')}
+                            className={`px-2.5 py-1 rounded-full text-[10px] font-bold transition-all ${
+                                speedPreset === 'nightcore'
+                                    ? 'bg-pink-500 text-white'
+                                    : 'text-white/40 hover:text-white'
+                            }`}
+                        >
+                            Nightcore
+                        </button>
+                    </div>
                 </div>
 
                 {/* Center: Main Controls */}

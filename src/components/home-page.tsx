@@ -166,7 +166,7 @@ function ToolCardSquare({ item }: { item: any }) {
             </div>
             <div className="px-1">
                 <h4 className="font-bold text-base mb-0.5">{item.title}</h4>
-                <p className="text-[10px] text-white/40 uppercase tracking-wider font-bold">{item.description}</p>
+                <p className="text-xs text-white/40">{item.description}</p>
             </div>
         </Link>
     );

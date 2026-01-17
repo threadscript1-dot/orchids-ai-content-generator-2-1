@@ -30,6 +30,7 @@ import { toast } from 'sonner';
 
 import { AddToCollectionModal } from '@/components/library/AddToCollectionModal';
 import { ConfirmDeleteDialog } from '@/components/library/ConfirmDeleteDialog';
+import { downloadFile } from '@/lib/utils';
 
 interface VideoDetailDialogProps {
     video: Generation | null;
@@ -101,11 +102,10 @@ export function VideoDetailDialog({
 
     const currentAsset = video.result_assets?.[selectedAssetIndex] || video.result_assets?.[0];
 
-    const handleDownload = () => {
-        const link = document.createElement('a');
-        link.href = currentAsset?.url || '';
-        link.download = 'generated-video.mp4';
-        link.click();
+    const handleDownload = async () => {
+        const url = currentAsset?.url;
+        if (!url) return;
+        await downloadFile(url, `video-${video.id}.mp4`);
     };
 
     const handleCopyPrompt = (e: React.MouseEvent) => {

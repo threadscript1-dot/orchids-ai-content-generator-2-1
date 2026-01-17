@@ -26,6 +26,7 @@ import { useFoldersStore, Folder } from '@/stores/folders-store';
 import { Slider } from '@/components/ui/slider';
 import { toast } from 'sonner';
 import { GridSizeSlider, GeneratingPlaceholder, ImageCard } from '@/components/generation';
+import { downloadFile } from '@/lib/utils';
 import {
     LibrarySidebar,
     MediaCard,
@@ -319,16 +320,15 @@ export function LibraryPage() {
 
     const [isBatchAddToCollectionOpen, setIsBatchAddToCollectionOpen] = useState(false);
 
-    const handleBatchDownload = () => {
-        selectedIds.forEach((id) => {
+    const handleBatchDownload = async () => {
+        for (const id of selectedIds) {
             const gen = generations.find((g) => g.id === id);
             if (gen && gen.result_assets && gen.result_assets[0]) {
-                const link = document.createElement('a');
-                link.href = gen.result_assets[0].url;
-                link.download = `${gen.type}-${gen.id}`;
-                link.click();
+                const url = gen.result_assets[0].url;
+                const ext = gen.type === 'video' ? 'mp4' : gen.type === 'audio' ? 'mp3' : 'jpg';
+                await downloadFile(url, `${gen.type}-${gen.id}.${ext}`);
             }
-        });
+        }
         toast.success(
             language === 'ru'
                 ? `Начато скачивание ${selectedIds.length} файлов`
@@ -701,11 +701,7 @@ export function LibraryPage() {
                                                             isPlaying={isCurrentTrack && isPlaying}
                                                             onClick={() => playTrack(gen, trackIdx)}
                                                             onDownload={() => {
-                                                                const link =
-                                                                    document.createElement('a');
-                                                                link.href = track.url;
-                                                                link.download = `audio-${gen.id}.mp3`;
-                                                                link.click();
+                                                                downloadFile(track.url, `audio-${gen.id}.mp3`);
                                                             }}
                                                         />
                                                     );

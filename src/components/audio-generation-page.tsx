@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { toast } from 'sonner';
 
 import { useLanguage } from '@/lib/language-context';
+import { downloadFile } from '@/lib/utils';
 import { useModelsStore } from '@/stores/models-store';
 import { useGenerationStore, Generation } from '@/stores/generation-store';
 import { useAudioPlayer } from '@/hooks/useAudioPlayer';
@@ -234,10 +235,7 @@ export function AudioGenerationPage() {
                                                 isPlaying={isCurrentTrack && isPlaying}
                                                 onClick={() => playTrack(gen, trackIdx)}
                                                 onDownload={() => {
-                                                    const link = document.createElement('a');
-                                                    link.href = track.url;
-                                                    link.download = `audio-${gen.id}.mp3`;
-                                                    link.click();
+                                                    downloadFile(track.url, `audio-${gen.id}.mp3`);
                                                 }}
                                             />
                                         );

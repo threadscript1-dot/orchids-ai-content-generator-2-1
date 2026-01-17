@@ -31,6 +31,7 @@ import { toast } from 'sonner';
 
 import { AddToCollectionModal } from '@/components/library/AddToCollectionModal';
 import { ConfirmDeleteDialog } from '@/components/library/ConfirmDeleteDialog';
+import { downloadFile } from '@/lib/utils';
 
 interface ImageDetailDialogProps {
     image: Generation | null;
@@ -99,11 +100,11 @@ export function ImageDetailDialog({
 
     const currentAsset = image.result_assets?.[selectedAssetIndex] || image.result_assets?.[0];
 
-    const handleDownload = () => {
-        const link = document.createElement('a');
-        link.href = currentAsset?.url || '';
-        link.download = 'generated-image.png';
-        link.click();
+    const handleDownload = async () => {
+        const url = currentAsset?.url;
+        if (!url) return;
+        const ext = url.includes('.png') ? 'png' : url.includes('.webp') ? 'webp' : 'jpg';
+        await downloadFile(url, `image-${image.id}.${ext}`);
     };
 
     const handleCopyPrompt = (e: React.MouseEvent) => {
